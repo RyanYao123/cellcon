@@ -92,7 +92,7 @@ namespace cellCon
 		}
 		#endregion
 
-		private void Rectangle_MouseUp(object sender, MouseButtonEventArgs e)
+        private void Rectangle_MouseUp(object sender, MouseButtonEventArgs e)
 		{
 			Rectangle r=sender as Rectangle;
 			Point p=r.TranslatePoint(new Point(), canvas1);
@@ -105,6 +105,76 @@ namespace cellCon
 			flir.set_spot((int)lefttop.X, (int)lefttop.Y, (int)rightbottom.X, (int)rightbottom.Y);
 		}
 
+        #region 视频切换
+        private void light_Checked(object sender, RoutedEventArgs e)
+        {
+            hightemper.Visibility = Visibility.Hidden;
+            lowtemper.Visibility = Visibility.Hidden;
+            avertemper.Visibility = Visibility.Hidden;
+            xangle.Visibility = Visibility.Visible;
+            yangle.Visibility = Visibility.Visible;
+            xangle.SetValue(Canvas.LeftProperty, 734.0);
+            yangle.SetValue(Canvas.LeftProperty, 734.0);
+            xangle.Opacity = 0.5;
+            yangle.Opacity = 0.5;
+            choosearea.Visibility = Visibility.Hidden;
+            canvas2.Visibility = Visibility.Hidden;
+            canvas1.SetValue(Grid.ColumnSpanProperty, 2);
+            vce.SetValue(Grid.ColumnSpanProperty, 2);
+        }
 
-	}
+        private void infra_Checked(object sender, RoutedEventArgs e)
+        {
+            hightemper.Visibility = Visibility.Visible;
+            lowtemper.Visibility = Visibility.Visible;
+            avertemper.Visibility = Visibility.Visible;
+            xangle.Visibility = Visibility.Hidden;
+            yangle.Visibility = Visibility.Hidden;
+            choosearea.Visibility = Visibility.Visible;
+            canvas2.Visibility = Visibility.Hidden;
+            canvas1.SetValue(Grid.ColumnSpanProperty, 2);
+            vce.SetValue(Grid.ColumnSpanProperty, 2);
+            hightemper.Opacity = 0.5;
+            lowtemper.Opacity = 0.5;
+            avertemper.Opacity = 0.5;
+        }
+
+        private void both_Checked(object sender, RoutedEventArgs e)
+        {
+            canvas2.Visibility = Visibility.Visible;
+            canvas1.SetValue(Grid.ColumnSpanProperty, 1);
+            vce.SetValue(Grid.ColumnSpanProperty, 1);
+            choosearea.Visibility = Visibility.Hidden;
+            xangle.Visibility = Visibility.Visible;
+            yangle.Visibility = Visibility.Visible;
+            xangle.SetValue(Canvas.LeftProperty, 10.0);
+            yangle.SetValue(Canvas.LeftProperty, 10.0);
+            xangle.Opacity = 1;
+            yangle.Opacity = 1;
+            hightemper.Opacity = 1;
+            lowtemper.Opacity = 1;
+            avertemper.Opacity = 1;
+        }
+        #endregion
+
+        #region 选框大小
+        private void smallbox_Checked(object sender, RoutedEventArgs e)
+        {
+            choosearea.Height = 120;
+            choosearea.Width = 160;
+        }
+
+        private void middlebox_Checked(object sender, RoutedEventArgs e)
+        {
+            choosearea.Height = 180;
+            choosearea.Width = 240;
+        }
+
+        private void largebox_Checked(object sender, RoutedEventArgs e)
+        {
+            choosearea.Height = 240;
+            choosearea.Width = 320;
+        }
+        #endregion
+    }
 }

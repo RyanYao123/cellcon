@@ -10,25 +10,27 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="930*"></ColumnDefinition>
 			<ColumnDefinition Width="370*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <wpfmedia:VideoCaptureElement Grid.Column="0" Name="vce"></wpfmedia:VideoCaptureElement>
-        <Canvas Grid.Column="0" Name="canvas1" Background="#00000000">
-            <!--Rectangle Canvas.Left="123" Canvas.Top="91" Fill="#4BFF0000" Width="198" Height="106" MouseUp="Rectangle_MouseUp">
-                <i:Interaction.Behaviors>
-                    <custom:DragInCanvasBehavior></custom:DragInCanvasBehavior>
-                </i:Interaction.Behaviors>
-            </Rectangle-->
-            <Label Canvas.Left="734" Canvas.Top="16" Content="俯仰角度: 28.3度" Height="37" Name="label1" Width="165" FontSize="20" FontWeight="Bold" Background="White" Opacity="0.5" />
-            <Label Canvas.Left="734" Canvas.Top="54" Content="航向角度: 271度" Height="37" Name="label2" Width="165" FontSize="20" FontWeight="Bold" Background="White" Opacity="0.5" />
-            <Image Canvas.Left="328" Canvas.Top="265" Height="112" Name="image1" Stretch="Fill" Width="200" Source="/cellCon;component/picture/choose.png">
-                <i:Interaction.Behaviors>
-                    <custom:DragInCanvasBehavior></custom:DragInCanvasBehavior>
-                </i:Interaction.Behaviors>
-            </Image>
-            <Label Background="White" Canvas.Left="10" Canvas.Top="16" Content="最高温度: 36.3度" FontSize="20" FontWeight="Bold" Height="37" Name="label3" Opacity="0.5" Width="165" />
-            <Label Background="White" Canvas.Left="10" Canvas.Top="54" Content="最低温度: 21.4度" FontSize="20" FontWeight="Bold" Height="37" Name="label4" Opacity="0.5" Width="165" />
-            <Label Background="White" Canvas.Left="10" Canvas.Top="92" Content="平均温度: 27.9度" FontSize="20" FontWeight="Bold" Height="37" Name="label5" Opacity="0.5" Width="165" />
-        </Canvas>
+        </Grid.ColumnDefinitions>      
+        <Grid Grid.Column="0" ShowGridLines="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <wpfmedia:VideoCaptureElement Grid.Column="0" Grid.ColumnSpan="2" Name="vce"></wpfmedia:VideoCaptureElement>
+            <Canvas Grid.Column="0" Grid.ColumnSpan="2" Name="canvas1" Background="#00000000">
+                <Label Canvas.Left="734" Canvas.Top="16" Content="俯仰角度: 28.3度" Height="37" Name="xangle" Width="165" FontSize="20" FontWeight="Bold" Background="White" Opacity="0.5" />
+                <Label Canvas.Left="734" Canvas.Top="54" Content="航向角度: 271度" Height="37" Name="yangle" Width="165" FontSize="20" FontWeight="Bold" Background="White" Opacity="0.5" />
+                <Image Canvas.Left="359" Canvas.Top="286" Height="150" Width="200" Name="choosearea" Stretch="Fill" Source="/cellCon;component/picture/choose.png" Visibility="Hidden">
+                    <i:Interaction.Behaviors>
+                        <custom:DragInCanvasBehavior></custom:DragInCanvasBehavior>
+                    </i:Interaction.Behaviors>
+                </Image>
+                <Label Background="White" Canvas.Left="734" Canvas.Top="16" Content="最高温度: 36.3度" FontSize="20" FontWeight="Bold" Height="37" Name="hightemper" Opacity="0.5" Width="165" Visibility="Hidden" />
+                <Label Background="White" Canvas.Left="734" Canvas.Top="54" Content="最低温度: 21.4度" FontSize="20" FontWeight="Bold" Height="37" Name="lowtemper" Opacity="0.5" Width="165" Visibility="Hidden" />
+                <Label Background="White" Canvas.Left="734" Canvas.Top="92" Content="平均温度: 27.9度" FontSize="20" FontWeight="Bold" Height="37" Name="avertemper" Opacity="0.5" Width="165" Visibility="Hidden" />
+            </Canvas>
+            <Canvas Grid.Column="1" Name="canvas2" Background="#00000000" Visibility="Hidden"></Canvas>
+        </Grid>
 		<Grid Grid.Column="1" ShowGridLines="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="150*"><!--视频切换(云台/红外/Both)--></RowDefinition>
@@ -36,8 +38,9 @@
                 <RowDefinition Height="80*"><!--[变焦]变倍(变倍+/变倍-)--></RowDefinition>
                 <RowDefinition Height="150*"><!--微调(X轴/Y轴/Z轴)--></RowDefinition>
                 <RowDefinition Height="80*"><!--录像/拍照--></RowDefinition>
-                <RowDefinition Height="150*"><!--调试框--></RowDefinition>
-                <RowDefinition Height="60*"><!--连接状态--></RowDefinition>
+                <RowDefinition Height="110*"><!--调试框--></RowDefinition>
+                <RowDefinition Height="50*"><!--连接状态--></RowDefinition>
+                <RowDefinition Height="50*"><!--连接状态--></RowDefinition>
             </Grid.RowDefinitions>
             <GroupBox Header="视频切换" HorizontalAlignment="Center" Name="groupBox1" VerticalAlignment="Center" Height="143" Width="363" FontWeight="Bold" FontSize="18" Grid.Row="0">
                 <Grid ShowGridLines="False">
@@ -46,9 +49,9 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <RadioButton Grid.Row="0" Content="可见光 (Ctrl+1)" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" Margin="20,8,0,8" GroupName="viewChannel" IsChecked="True"></RadioButton>
-                    <RadioButton Grid.Row="1" Content="红外 (Ctrl+2)" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" Margin="20,8,0,8" GroupName="viewChannel"></RadioButton>
-                    <RadioButton Grid.Row="2" Content="可见光+红外 (Ctrl+3)" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" Margin="20,8,0,8" GroupName="viewChannel"></RadioButton>
+                    <RadioButton Grid.Row="0" Content="可见光 (Ctrl+1)" Name="light" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" Margin="20,8,0,8" GroupName="viewChannel" IsChecked="True" Checked="light_Checked"></RadioButton>
+                    <RadioButton Grid.Row="1" Content="红外 (Ctrl+2)" Name="infra" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" Margin="20,8,0,8" GroupName="viewChannel" Checked="infra_Checked"></RadioButton>
+                    <RadioButton Grid.Row="2" Content="可见光+红外 (Ctrl+3)" Name="both" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" Margin="20,8,0,8" GroupName="viewChannel" Checked="both_Checked"></RadioButton>
                 </Grid>
             </GroupBox>
             <GroupBox Header="变焦选择" HorizontalAlignment="Center" Name="groupBox2" VerticalAlignment="Top" Height="76" Width="363" FontWeight="Bold" FontSize="18" Grid.Row="1">
@@ -122,11 +125,9 @@
                     <Button Grid.Column="1" Content="拍照 (Ctrl+R)" FontWeight="Normal"></Button>
                 </Grid>
             </GroupBox>
-            <GroupBox Header="辅助调试" HorizontalAlignment="Center" Name="groupBox6" VerticalAlignment="Top" Height="199" Width="363" FontWeight="Bold" FontSize="18" Grid.Row="5">
-                <Grid ShowGridLines="False">
+            <GroupBox Header="辅助调试" HorizontalAlignment="Center" Name="groupBox6" VerticalAlignment="Top" Height="105" Width="363" FontWeight="Bold" FontSize="18" Grid.Row="5" Grid.RowSpan="2">
+                <Grid ShowGridLines="True" Height="72">
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
@@ -134,17 +135,25 @@
                         <ColumnDefinition Width="100*"></ColumnDefinition>
                         <ColumnDefinition Width="251*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Row="0" Grid.Column="0" Text="1" FontWeight="Normal" TextAlignment="Center" Name="textBox1"></TextBox>
-                    <Button Grid.Row="0" Grid.Column="1" Content="连接串口" FontWeight="Normal"></Button>
+                    <Label Grid.Row="0" Grid.Column="0" FontWeight="Normal" FontSize="16" HorizontalAlignment="Left">Output:</Label>
+                    <Label Grid.Row="0" Grid.Column="1" FontWeight="Normal" FontSize="16" HorizontalAlignment="Right">TEST</Label>
                     <Label Grid.Row="1" Grid.Column="0" Content="连接设备" FontWeight="Normal"></Label>
-                    <ComboBox Grid.Row="1" Grid.Column="2" Name="cb" SelectionChanged="cb_SelectionChanged" FontWeight="Normal" />
-                    <Label Grid.Row="2" Grid.Column="0" Content="当前温度" FontWeight="Normal"></Label>
-                    <TextBox Grid.Row="2" Grid.Column="1" Name="temper"></TextBox>
-                    <Label Grid.Row="3" Grid.Column="0" Content="连接状态" FontWeight="Normal"></Label>
-                    <Label Grid.Row="3" Grid.Column="1" Content="connect" Name="connect" FontWeight="Normal" FlowDirection="RightToLeft"></Label>
+                    <ComboBox Grid.Row="1" Grid.Column="2" Name="cb" SelectionChanged="cb_SelectionChanged" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" />
                 </Grid>
             </GroupBox>
             <Grid Grid.Row="6" ShowGridLines="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="选框大小" FontWeight="Normal" FontSize="18" VerticalAlignment="Center"></Label>
+                <RadioButton Grid.Column="1" Content="小尺寸" Name="smallbox" FontWeight="Normal" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" GroupName="boxsize" Checked="smallbox_Checked"></RadioButton>
+                <RadioButton Grid.Column="2" Content="中尺寸" Name="middlebox" FontWeight="Normal" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" GroupName="boxsize" IsChecked="True" Checked="middlebox_Checked"></RadioButton>
+                <RadioButton Grid.Column="3" Content="大尺寸" Name="largebox" FontWeight="Normal" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" GroupName="boxsize" Checked="largebox_Checked"></RadioButton>
+            </Grid>
+            <Grid Grid.Row="7" ShowGridLines="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"></ColumnDefinition>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
