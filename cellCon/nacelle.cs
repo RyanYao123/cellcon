@@ -43,6 +43,26 @@ namespace cellCon
 			pack.pre_cb=pre_cb;
 			pack.pre_offset=1;
 			pack.pro=pro;
+			
+		}
+		//搜索串口
+		public void find_uart(string[] com)
+		{
+			for(int i=0;i<com.Length;i++)
+			{
+				try
+				{
+					uart.PortName=com[i];
+					uart.ReadTimeout=500;
+					uart.Open();
+					//uart.Write();
+					//uart.Read();
+					uart.Close();
+				}
+				catch
+				{
+				}
+			}
 			uart.data_rx+=uart_DataReceived;
 		}
 		//需由调用方捕获异常,并检查Port的合法性

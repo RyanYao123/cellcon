@@ -15,8 +15,9 @@
 			<WrapPanel Name="cell_wrap"  Grid.Row="0" Margin="5">
 				<Button Height="30" VerticalAlignment="Center" Margin="5" Click="BT_打开串口1">打开串口</Button>
 				<TextBox Width="30" VerticalAlignment="Center" Margin="5" Text="{Binding cell_com}"></TextBox>
-				<CheckBox VerticalAlignment="Center" Margin="5">摄像头放大</CheckBox>
-				<CheckBox VerticalAlignment="Center" Margin="5">摄像头缩小</CheckBox>
+				<RadioButton VerticalAlignment="Center" Margin="5">摄像头放大</RadioButton>
+				<RadioButton VerticalAlignment="Center" Margin="5">摄像头缩小</RadioButton>
+				<RadioButton VerticalAlignment="Center" Margin="5">停止</RadioButton>
 				<WrapPanel>
 					<Label >俯仰角:</Label>
 					<Label Content="{Binding ElementName=slider_Ver,Path=Value}"></Label>
@@ -68,11 +69,11 @@
 				<RowDefinition Height="auto" />
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
-			<WrapPanel Grid.Row="0" Margin="5">
-				<Button Height="30" VerticalAlignment="Center" Click="BT_打开串口2">打开串口</Button>
+			<WrapPanel Grid.Row="0">
+				<Button Height="30" VerticalAlignment="Center" Margin="5" Click="BT_打开串口2">打开串口</Button>
 				<TextBox Width="30" VerticalAlignment="Center" Text="{Binding flir_com}"></TextBox>
-				<Button Height="30" VerticalAlignment="Center">发送</Button>
-				<WrapPanel VerticalAlignment="Center">
+				<Button Height="30" VerticalAlignment="Center" Margin="5" Click="flir_set_spot">设置坐标</Button>
+				<WrapPanel VerticalAlignment="Center" Margin="5">
 					<Label >左:</Label>
 					<TextBox Name="pose_left_text" Width="30" Text="{Binding flir_left}"></TextBox>
 					<Label >上:</Label>
@@ -82,7 +83,9 @@
 					<Label >下:</Label>
 					<TextBox Name="pose_down_text" Width="30" Text="{Binding flir_down}"></TextBox>
 				</WrapPanel>
-				<Button Height="30" VerticalAlignment="Center" Click="bt_flir_get">获取</Button>
+				<Button Height="30" VerticalAlignment="Center" Margin="5" Click="bt_flir_get">获取温度</Button>
+				<Button Height="30" VerticalAlignment="Center" Margin="5" Click="bt_flir_get_spot">获取坐标</Button>
+				<Button Height="30" VerticalAlignment="Center" Margin="5" Click="bt_flir_test_cmd">测试指令</Button>
 			</WrapPanel>
 			<TextBox Name="flir_org_text"  Grid.Row="1" MaxLines="10000" VerticalScrollBarVisibility="Visible" 
 					 TextChanged="text_TextChanged"></TextBox>

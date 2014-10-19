@@ -137,9 +137,20 @@ namespace cellCon
 		{
 			flir.get_temp();
 		}
-
+		private void bt_flir_get_spot(object sender, RoutedEventArgs e)
+		{
+			flir.get_spot();
+		}
+		private void flir_set_spot(object sender, RoutedEventArgs e)
+		{
+			flir.set_spot(flir_left,flir_up,flir_right,flir_down);
+		}
+		private void bt_flir_test_cmd(object sender, RoutedEventArgs e)
+		{
+			flir.get_cmd2(0x43, 0,1);
+		}
 		#endregion
 
-		
+
 	}
 }
