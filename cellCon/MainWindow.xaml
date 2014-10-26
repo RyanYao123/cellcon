@@ -217,7 +217,7 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Label Grid.Column="1" Grid.Row="3" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">变焦选择</Label>
+                <Label Grid.Column="1" Grid.Row="3" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">变焦幅度</Label>
                 <Button Grid.Column="3" Grid.Row="3" Name="zommplus">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
