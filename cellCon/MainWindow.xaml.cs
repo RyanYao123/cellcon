@@ -105,25 +105,31 @@ namespace cellCon
 			flir.set_spot((int)lefttop.X, (int)lefttop.Y, (int)rightbottom.X, (int)rightbottom.Y);
 		}
 
-        #region 视频切换
-        private void light_Checked(object sender, RoutedEventArgs e)
+        #region 主界面显示切换
+        private void kjgButton_Checked(object sender, RoutedEventArgs e)
         {
-            hightemper.Visibility = Visibility.Hidden;
-            lowtemper.Visibility = Visibility.Hidden;
-            avertemper.Visibility = Visibility.Hidden;
-            xangle.Visibility = Visibility.Visible;
-            yangle.Visibility = Visibility.Visible;
-            xangle.SetValue(Canvas.LeftProperty, 734.0);
-            yangle.SetValue(Canvas.LeftProperty, 734.0);
-            xangle.Opacity = 0.5;
-            yangle.Opacity = 0.5;
-            choosearea.Visibility = Visibility.Hidden;
-            canvas2.Visibility = Visibility.Hidden;
-            canvas1.SetValue(Grid.ColumnSpanProperty, 2);
-            vce.SetValue(Grid.ColumnSpanProperty, 2);
+            try
+            {
+                hightemper.Visibility = Visibility.Hidden;
+                lowtemper.Visibility = Visibility.Hidden;
+                avertemper.Visibility = Visibility.Hidden;
+                xangle.Visibility = Visibility.Visible;
+                yangle.Visibility = Visibility.Visible;
+                xangle.SetValue(Canvas.LeftProperty, 734.0);
+                yangle.SetValue(Canvas.LeftProperty, 734.0);
+                xangle.Opacity = 0.5;
+                yangle.Opacity = 0.5;
+                choosearea.Visibility = Visibility.Hidden;
+                canvas2.Visibility = Visibility.Hidden;
+                canvas1.SetValue(Grid.ColumnSpanProperty, 2);
+                vce.SetValue(Grid.ColumnSpanProperty, 2);
+            }
+            catch{
+            
+            }
         }
 
-        private void infra_Checked(object sender, RoutedEventArgs e)
+        private void hwButton_Checked(object sender, RoutedEventArgs e)
         {
             hightemper.Visibility = Visibility.Visible;
             lowtemper.Visibility = Visibility.Visible;
@@ -139,7 +145,7 @@ namespace cellCon
             avertemper.Opacity = 0.5;
         }
 
-        private void both_Checked(object sender, RoutedEventArgs e)
+        private void bothButton_Checked(object sender, RoutedEventArgs e)
         {
             canvas2.Visibility = Visibility.Visible;
             canvas1.SetValue(Grid.ColumnSpanProperty, 1);
@@ -157,7 +163,7 @@ namespace cellCon
         }
         #endregion
 
-        #region 选框大小
+/*        #region 选框大小
         private void smallbox_Checked(object sender, RoutedEventArgs e)
         {
             choosearea.Height = 120;
@@ -176,5 +182,6 @@ namespace cellCon
             choosearea.Width = 320;
         }
         #endregion
+ */
     }
 }

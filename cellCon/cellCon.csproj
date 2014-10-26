@@ -125,6 +125,29 @@
   <ItemGroup>
     <Resource Include="picture\choose.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon\add.png" />
+    <Resource Include="icon\arrow-down.png" />
+    <Resource Include="icon\arrow-left.png" />
+    <Resource Include="icon\arrow-right.png" />
+    <Resource Include="icon\arrow-up.png" />
+    <Resource Include="icon\big.png" />
+    <Resource Include="icon\both.png" />
+    <Resource Include="icon\camera-3.png" />
+    <Resource Include="icon\expand.png" />
+    <Resource Include="icon\hongwai.png" />
+    <Resource Include="icon\kejianguang.png" />
+    <Resource Include="icon\map.png" />
+    <Resource Include="icon\mid.png" />
+    <Resource Include="icon\remove.png" />
+    <Resource Include="icon\small.png" />
+    <Resource Include="icon\star.png" />
+    <Resource Include="icon\unwatch.png" />
+    <Resource Include="icon\video.png" />
+    <Resource Include="icon\watch-2.png" />
+    <Resource Include="icon\zoom-in.png" />
+    <Resource Include="icon\zoom-out.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

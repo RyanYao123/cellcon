@@ -5,13 +5,54 @@
         xmlns:custom="clr-namespace:CustomBehaviorsLibrary;assembly=CustomBehaviorsLibrary" 
         xmlns:wpfmedia="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
         xml:space="preserve"
-        Title="云台控制软件" Height="750" Width="1300" Loaded="Window_Loaded" Closing="Window_Closing">
-	<Grid ShowGridLines="True">
+        Title="吊舱监控界面" Height="750" Width="1300" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFBCBEC1" Offset="1" />
+            <GradientStop Color="#FF937460" Offset="0" />
+        </LinearGradientBrush>
+    </Window.Background>
+	<Grid ShowGridLines="False">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="930*"></ColumnDefinition>
-			<ColumnDefinition Width="370*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>      
-        <Grid Grid.Column="0" ShowGridLines="True">
+            <ColumnDefinition Width="90*" ><!--主界面转换控制区域--></ColumnDefinition>
+            <ColumnDefinition Width="930*"><!--主界面显示区域--></ColumnDefinition>
+            <ColumnDefinition Width="280*" ><!--控制区域--></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0" Width="80" Orientation="Vertical" Focusable="True">
+            <!--StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF767778" Offset="0" />
+                    <GradientStop Color="#A5BA6E40" Offset="1" />
+                </LinearGradientBrush>
+            </StackPanel.Background-->
+            <RadioButton Width="80" Height="70" Margin="2,5" Cursor="Hand" Name="kjgButton" VerticalAlignment="Top" Style="{DynamicResource RDOButton}" SnapsToDevicePixels="True" IsChecked="True" GroupName="MainView" Checked="kjgButton_Checked">
+                <StackPanel HorizontalAlignment="Center">
+                    <Image Width="35" Height="35" Margin="0,5" Source="/icon/kejianguang.png"/>
+                    <TextBlock><Run Text="可见光"/></TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Width="80" Height="70" Margin="2,5"  Cursor="Hand" Name="hwButton" VerticalAlignment="Top" Style="{DynamicResource RDOButton}" SnapsToDevicePixels="True" GroupName="MainView" Checked="hwButton_Checked">
+                <StackPanel HorizontalAlignment="Center">
+                    <Image Width="35" Height="35" Margin="0,5" Source="/icon/hongwai.png"/>
+                    <TextBlock HorizontalAlignment="Center"><Run Text="红外"/></TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Width="80" Height="70" Margin="2,5" Cursor="Hand" Name="bothButton" VerticalAlignment="Top" Style="{DynamicResource RDOButton}" SnapsToDevicePixels="True" GroupName="MainView" Checked="bothButton_Checked">
+                <StackPanel HorizontalAlignment="Center">
+                    <Image Width="35" Height="35" Margin="0,5" Source="/icon/both.png"/>
+                    <TextBlock><Run Text="双界面"/></TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Width="80" Height="70" Cursor="Hand" Margin="2,5"  Name="caipinshezhiToolBarButton" VerticalAlignment="Top" Style="{DynamicResource RDOButton}" SnapsToDevicePixels="True" GroupName="MainView" IsEnabled="False" Opacity="0.4">
+                <StackPanel HorizontalAlignment="Center">
+                    <Image Width="35" Height="35" Margin="0,5" Source="/icon/map.png"/>
+                    <TextBlock HorizontalAlignment="Center"><Run Text="地图"/></TextBlock>
+                </StackPanel>
+            </RadioButton>
+        </StackPanel>
+        
+        <Grid Grid.Column="1" ShowGridLines="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -20,147 +61,320 @@
             <Canvas Grid.Column="0" Grid.ColumnSpan="2" Name="canvas1" Background="#00000000">
                 <Label Canvas.Left="734" Canvas.Top="16" Content="俯仰角度: 28.3度" Height="37" Name="xangle" Width="165" FontSize="20" FontWeight="Bold" Background="White" Opacity="0.5" />
                 <Label Canvas.Left="734" Canvas.Top="54" Content="航向角度: 271度" Height="37" Name="yangle" Width="165" FontSize="20" FontWeight="Bold" Background="White" Opacity="0.5" />
+                <Label Background="White" Canvas.Left="734" Canvas.Top="16" Content="最高温度: 36.3度" FontSize="20" FontWeight="Bold" Height="37" Name="hightemper" Opacity="0.5" Width="165" Visibility="Hidden" />
+                <Label Background="White" Canvas.Left="734" Canvas.Top="54" Content="最低温度: 21.4度" FontSize="20" FontWeight="Bold" Height="37" Name="lowtemper" Opacity="0.5" Width="165" Visibility="Hidden" />
+                <Label Background="White" Canvas.Left="734" Canvas.Top="92" Content="平均温度: 27.9度" FontSize="20" FontWeight="Bold" Height="37" Name="avertemper" Opacity="0.5" Width="165" Visibility="Hidden" />
                 <Image Canvas.Left="359" Canvas.Top="286" Height="150" Width="200" Name="choosearea" Stretch="Fill" Source="/cellCon;component/picture/choose.png" Visibility="Hidden">
                     <i:Interaction.Behaviors>
                         <custom:DragInCanvasBehavior></custom:DragInCanvasBehavior>
                     </i:Interaction.Behaviors>
                 </Image>
-                <Label Background="White" Canvas.Left="734" Canvas.Top="16" Content="最高温度: 36.3度" FontSize="20" FontWeight="Bold" Height="37" Name="hightemper" Opacity="0.5" Width="165" Visibility="Hidden" />
-                <Label Background="White" Canvas.Left="734" Canvas.Top="54" Content="最低温度: 21.4度" FontSize="20" FontWeight="Bold" Height="37" Name="lowtemper" Opacity="0.5" Width="165" Visibility="Hidden" />
-                <Label Background="White" Canvas.Left="734" Canvas.Top="92" Content="平均温度: 27.9度" FontSize="20" FontWeight="Bold" Height="37" Name="avertemper" Opacity="0.5" Width="165" Visibility="Hidden" />
             </Canvas>
             <Canvas Grid.Column="1" Name="canvas2" Background="#00000000" Visibility="Hidden"></Canvas>
         </Grid>
-		<Grid Grid.Column="1" ShowGridLines="True">
+        
+        <Grid Grid.Column="2" ShowGridLines="False">
             <Grid.RowDefinitions>
-                <RowDefinition Height="150*"><!--视频切换(云台/红外/Both)--></RowDefinition>
-                <RowDefinition Height="80*"><!--变焦(放大/缩小/两者)--></RowDefinition>
-                <RowDefinition Height="80*"><!--[变焦]变倍(变倍+/变倍-)--></RowDefinition>
-                <RowDefinition Height="150*"><!--微调(X轴/Y轴/Z轴)--></RowDefinition>
-                <RowDefinition Height="80*"><!--录像/拍照--></RowDefinition>
-                <RowDefinition Height="110*"><!--调试框--></RowDefinition>
-                <RowDefinition Height="50*"><!--连接状态--></RowDefinition>
+                <RowDefinition Height="30*"><!--系统时间--></RowDefinition>
+                <RowDefinition Height="210*"><!--方向控制--></RowDefinition>
+                <RowDefinition Height="120*"><!--变焦控制--></RowDefinition>
+                <RowDefinition Height="150*"><!--微调控制--></RowDefinition>
+                <RowDefinition Height="60*"><!--采集控制--></RowDefinition>
+                <RowDefinition Height="80*"><!--界面取框--></RowDefinition>
+                <RowDefinition Height="50*"><!--连接设备--></RowDefinition>
                 <RowDefinition Height="50*"><!--连接状态--></RowDefinition>
             </Grid.RowDefinitions>
-            <GroupBox Header="视频切换" HorizontalAlignment="Center" Name="groupBox1" VerticalAlignment="Center" Height="143" Width="363" FontWeight="Bold" FontSize="18" Grid.Row="0">
-                <Grid ShowGridLines="False">
+            <Line Fill="Black" Y1="100" Y2="100"></Line>
+            <Grid Grid.Row="0" ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*"></ColumnDefinition>
+                    <ColumnDefinition Width="110*"></ColumnDefinition>
+                    <ColumnDefinition Width="80*"></ColumnDefinition>
+                    <ColumnDefinition Width="80*"></ColumnDefinition>
+                    <ColumnDefinition Width="10*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="1" Name="show_day" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">2014-10-26</Label>
+                <Label Grid.Column="2" Name="show_time" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">11:57</Label>
+                <Label Grid.Column="3" Name="show_week" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">星期日</Label>
+            </Grid>
+            <Grid Grid.Row="1" ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200*"></ColumnDefinition>
+                    <ColumnDefinition Width="80*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" ShowGridLines="False">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="26"></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <RadioButton Grid.Row="0" Content="可见光 (Ctrl+1)" Name="light" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" Margin="20,8,0,8" GroupName="viewChannel" IsChecked="True" Checked="light_Checked"></RadioButton>
-                    <RadioButton Grid.Row="1" Content="红外 (Ctrl+2)" Name="infra" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" Margin="20,8,0,8" GroupName="viewChannel" Checked="infra_Checked"></RadioButton>
-                    <RadioButton Grid.Row="2" Content="可见光+红外 (Ctrl+3)" Name="both" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" Margin="20,8,0,8" GroupName="viewChannel" Checked="both_Checked"></RadioButton>
+                    <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" FontWeight="Bold">镜头方向控制</Label>
+                    <Button Grid.Column="2" Grid.Row="1" Name="but_up">
+                        <Button.Content>
+                            <StackPanel Orientation="Vertical">
+                                <Image Source="/icon/arrow-up.png" Height="36"></Image>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="1" Grid.Row="2" Name="but_left">
+                        <Button.Content>
+                            <StackPanel Orientation="Vertical">
+                                <Image Source="/icon/arrow-left.png" Height="36"></Image>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="2" Grid.Row="3" Name="but_down">
+                        <Button.Content>
+                            <StackPanel Orientation="Vertical">
+                                <Image Source="/icon/arrow-down.png" Height="36"></Image>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="3" Grid.Row="2" Name="but_right">
+                        <Button.Content>
+                            <StackPanel Orientation="Vertical">
+                                <Image Source="/icon/arrow-right.png" Height="36"></Image>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                 </Grid>
-            </GroupBox>
-            <GroupBox Header="变焦选择" HorizontalAlignment="Center" Name="groupBox2" VerticalAlignment="Top" Height="76" Width="363" FontWeight="Bold" FontSize="18" Grid.Row="1">
-                <Grid ShowGridLines="False">
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="26"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="放大 (Ctrl+Z)" FontWeight="Normal"></Button>
-                    <Button Grid.Column="1" Content="缩小 (Ctrl+X)" FontWeight="Normal"></Button>
+                    <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" FontWeight="Bold">选框尺寸</Label>
+                    <Button Grid.Column="0" Grid.Row="1" Name="areabig">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/icon/big.png" Height="40"></Image>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="0" Grid.Row="3" Name="areamiddle">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/icon/mid.png" Height="40"></Image>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="0" Grid.Row="5" Name="areasmall">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/icon/small.png" Height="40"></Image>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                 </Grid>
-            </GroupBox>
+            </Grid>
             <Grid Grid.Row="2" ShowGridLines="False">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="10"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <GroupBox Grid.Column="0" Header="变焦倍数选择" HorizontalAlignment="Center" Name="groupBox3" VerticalAlignment="Top" Height="76" Width="243" FontWeight="Bold" FontSize="18">
-                    <Grid ShowGridLines="False">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="+ (Ctrl+V)" FontWeight="Normal"></Button>
-                        <Button Grid.Column="1" Content="- (Ctrl+F)" FontWeight="Normal"></Button>
-                    </Grid>
-                </GroupBox>
-                <Grid Grid.Column="1" ShowGridLines="True">
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" FontWeight="Normal" FontSize="18">当前倍数</Label>
-                    <Label Grid.Row="1" FontWeight="Normal" FontSize="18" FlowDirection="LeftToRight" HorizontalContentAlignment="Right" Height="38" VerticalAlignment="Bottom">+0  </Label>
-                </Grid>
+                <Label Grid.Column="1" Grid.Row="0" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">变焦选择</Label>
+                <Button Grid.Column="3" Grid.Row="0" Name="zommin">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/zoom-in.png" Height="40"></Image>
+                            <TextBlock TextAlignment="Center" FontSize="16" VerticalAlignment="Center">放大</TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Column="5" Grid.Row="0" Name="zommout">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/zoom-out.png" Height="40"></Image>
+                            <TextBlock TextAlignment="Center" FontSize="16" VerticalAlignment="Center">缩小</TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Label Grid.Column="1" Grid.Row="3" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">变焦选择</Label>
+                <Button Grid.Column="3" Grid.Row="3" Name="zommplus">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/add.png" Height="40"></Image>
+                            <TextBlock TextAlignment="Center" FontSize="16" VerticalAlignment="Center">增加</TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Column="5" Grid.Row="3" Name="zommminus">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/remove.png" Height="40"></Image>
+                            <TextBlock TextAlignment="Center" FontSize="16" VerticalAlignment="Center">减少</TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
             </Grid>
-            <GroupBox Header="方向微调" HorizontalAlignment="Center" Name="groupBox4" VerticalAlignment="Center" Height="143" Width="363" FontWeight="Bold" FontSize="18" Grid.Row="3">
-                <Grid ShowGridLines="True">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="124*"></ColumnDefinition>
-                        <ColumnDefinition Width="82*"></ColumnDefinition>
-                        <ColumnDefinition Width="82*"></ColumnDefinition>
-                        <ColumnDefinition Width="82*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" FontWeight="Normal" FontSize="16">方位轴(Ctrl+4)</Label>
-                    <Button Grid.Column="1" Grid.Row="0" Content="微调+" FontWeight="Normal"></Button>
-                    <Button Grid.Column="2" Grid.Row="0" Content="微调-" FontWeight="Normal"></Button>
-                    <Label Grid.Column="3" Grid.Row="0" FontWeight="Normal" FontSize="16" HorizontalAlignment="Center">1</Label>
-                    <Label Grid.Column="0" Grid.Row="1" FontWeight="Normal" FontSize="16">滚转轴(Ctrl+5)</Label>
-                    <Button Grid.Column="1" Grid.Row="1" Content="微调+" FontWeight="Normal"></Button>
-                    <Button Grid.Column="2" Grid.Row="1" Content="微调-" FontWeight="Normal"></Button>
-                    <Label Grid.Column="3" Grid.Row="1" FontWeight="Normal" FontSize="16" HorizontalAlignment="Center">1</Label>
-                    <Label Grid.Column="0" Grid.Row="2" FontWeight="Normal" FontSize="16">俯仰轴(Ctrl+6)</Label>
-                    <Button Grid.Column="1" Grid.Row="2" Content="微调+" FontWeight="Normal"></Button>
-                    <Button Grid.Column="2" Grid.Row="2" Content="微调-" FontWeight="Normal"></Button>
-                    <Label Grid.Column="3" Grid.Row="2" FontWeight="Normal" FontSize="16" HorizontalAlignment="Center">1</Label>
-                </Grid>
-            </GroupBox>
-            <GroupBox Header="图像采集" HorizontalAlignment="Center" Name="groupBox5" VerticalAlignment="Top" Height="76" Width="363" FontWeight="Bold" FontSize="18" Grid.Row="4">
-                <Grid ShowGridLines="False">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="录像 (Ctrl+E)" FontWeight="Normal"></Button>
-                    <Button Grid.Column="1" Content="拍照 (Ctrl+R)" FontWeight="Normal"></Button>
-                </Grid>
-            </GroupBox>
-            <GroupBox Header="辅助调试" HorizontalAlignment="Center" Name="groupBox6" VerticalAlignment="Top" Height="105" Width="363" FontWeight="Bold" FontSize="18" Grid.Row="5" Grid.RowSpan="2">
-                <Grid ShowGridLines="True" Height="72">
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100*"></ColumnDefinition>
-                        <ColumnDefinition Width="251*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" FontWeight="Normal" FontSize="16" HorizontalAlignment="Left">Output:</Label>
-                    <Label Grid.Row="0" Grid.Column="1" FontWeight="Normal" FontSize="16" HorizontalAlignment="Right">TEST</Label>
-                    <Label Grid.Row="1" Grid.Column="0" Content="连接设备" FontWeight="Normal"></Label>
-                    <ComboBox Grid.Row="1" Grid.Column="2" Name="cb" SelectionChanged="cb_SelectionChanged" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" />
-                </Grid>
-            </GroupBox>
-            <Grid Grid.Row="6" ShowGridLines="True">
+            <Grid Grid.Row="3" ShowGridLines="False">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Content="选框大小" FontWeight="Normal" FontSize="18" VerticalAlignment="Center"></Label>
-                <RadioButton Grid.Column="1" Content="小尺寸" Name="smallbox" FontWeight="Normal" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" GroupName="boxsize" Checked="smallbox_Checked"></RadioButton>
-                <RadioButton Grid.Column="2" Content="中尺寸" Name="middlebox" FontWeight="Normal" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" GroupName="boxsize" IsChecked="True" Checked="middlebox_Checked"></RadioButton>
-                <RadioButton Grid.Column="3" Content="大尺寸" Name="largebox" FontWeight="Normal" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" GroupName="boxsize" Checked="largebox_Checked"></RadioButton>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="10"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="10"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="1" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">方位轴</Label>
+                <Label Grid.Column="0" Grid.Row="3" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">滚动轴</Label>
+                <Label Grid.Column="0" Grid.Row="5" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">俯仰轴</Label>
+                <Button Grid.Column="2" Grid.Row="1" Name="xplus">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/watch-2.png" Height="30"></Image>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Column="2" Grid.Row="3" Name="yplus">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/watch-2.png" Height="30"></Image>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Column="2" Grid.Row="5" Name="zplus">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/watch-2.png" Height="30"></Image>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Column="4" Grid.Row="1" Name="xminus">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/unwatch.png" Height="30"></Image>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Column="4" Grid.Row="3" Name="yminus">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/unwatch.png" Height="30"></Image>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Column="4" Grid.Row="5" Name="zminus">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/unwatch.png" Height="30"></Image>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Label Grid.Column="6" Grid.Row="1" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">23</Label>
+                <Label Grid.Column="6" Grid.Row="3" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">12</Label>
+                <Label Grid.Column="6" Grid.Row="5" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">9</Label>
             </Grid>
-            <Grid Grid.Row="7" ShowGridLines="True">
+            <Grid Grid.Row="4" ShowGridLines="False">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="80"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Content="  连接状态" FontWeight="Normal" FontSize="18" VerticalAlignment="Center"></Label>
-                <Label Grid.Column="1" Content="未连接  " FontWeight="Normal" VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Right"></Label>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="1" Grid.Column="0" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">采集方式</Label>
+                <Button Grid.Row="1" Grid.Column="2" Name="video">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/video.png" Height="30"></Image>
+                            <TextBlock TextAlignment="Center" FontSize="14" VerticalAlignment="Center">录像</TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Row="1" Grid.Column="4" Name="camera">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/icon/video.png" Height="30"></Image>
+                            <TextBlock TextAlignment="Center" FontSize="14" VerticalAlignment="Center">拍照</TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="5" ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">高级功能</Label>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Focusable="True">
+                    <RadioButton Width="80" Height="70" Margin="5,5" Cursor="Hand" Name="gettemper" VerticalAlignment="Top" Style="{DynamicResource RDOButton}" SnapsToDevicePixels="True" IsChecked="True" GroupName="newfeature">
+                        <StackPanel HorizontalAlignment="Center">
+                            <Image Width="35" Height="35" Margin="0,5" Source="/icon/expand.png"/>
+                            <TextBlock><Run Text="温度区域"/></TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Width="80" Height="70" Margin="5,5"  Cursor="Hand" Name="getfocus" VerticalAlignment="Top" Style="{DynamicResource RDOButton}" SnapsToDevicePixels="True" GroupName="newfeature">
+                        <StackPanel HorizontalAlignment="Center">
+                            <Image Width="35" Height="35" Margin="0,5" Source="/icon/star.png"/>
+                            <TextBlock><Run Text="跟踪区域"/></TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="6" ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">连接设备</Label>
+                <ComboBox Grid.Column="2" Name="cb" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" />
+                <!--ComboBox Grid.Column="2" Name="cb" SelectionChanged="cb_SelectionChanged" FontWeight="Normal" FontSize="16" VerticalAlignment="Center" /-->
+            </Grid>
+            <Grid Grid.Row="7" ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">连接状态</Label>
+                <Label Grid.Column="2" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">已连接</Label>
             </Grid>
         </Grid>
-	</Grid>
+    </Grid>
 </Window>
