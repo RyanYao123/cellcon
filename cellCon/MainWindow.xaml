@@ -58,7 +58,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <wpfmedia:VideoCaptureElement Grid.Column="0" Grid.ColumnSpan="2" Name="vce"></wpfmedia:VideoCaptureElement>
-            <Canvas Grid.Column="0" Grid.ColumnSpan="2" Name="canvas1" Background="#00000000">
+            <Canvas Grid.Column="0" Grid.ColumnSpan="2" Name="canvas1" Background="#00000000" MouseUp="endSelect" MouseDown="startSelect" MouseMove="moveSelect">
                 <Label Canvas.Left="734" Canvas.Top="16" Content="俯仰角度: 28.3度" Height="37" Name="xangle" Width="165" FontSize="20" FontWeight="Bold" Background="White" Opacity="0.5" />
                 <Label Canvas.Left="734" Canvas.Top="54" Content="航向角度: 271度" Height="37" Name="yangle" Width="165" FontSize="20" FontWeight="Bold" Background="White" Opacity="0.5" />
                 <Label Background="White" Canvas.Left="734" Canvas.Top="16" Content="最高温度: 36.3度" FontSize="20" FontWeight="Bold" Height="37" Name="hightemper" Opacity="0.5" Width="165" Visibility="Hidden" />
@@ -93,9 +93,9 @@
                     <ColumnDefinition Width="80*"></ColumnDefinition>
                     <ColumnDefinition Width="10*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="1" Name="show_day" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">2014-10-26</Label>
-                <Label Grid.Column="2" Name="show_time" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">11:57</Label>
-                <Label Grid.Column="3" Name="show_week" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">星期日</Label>
+                <Label Grid.Column="1" Name="show_day" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">2012-12-12</Label>
+                <Label Grid.Column="2" Name="show_time" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">12:12</Label>
+                <Label Grid.Column="3" Name="show_week" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">星期三</Label>
             </Grid>
             <Grid Grid.Row="1" ShowGridLines="False">
                 <Grid.ColumnDefinitions>

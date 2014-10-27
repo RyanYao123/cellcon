@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Interactivity;
 using WPFMediaKit.DirectShow.Controls;
+using System.Windows.Threading;
 
 namespace cellCon
 {
@@ -61,6 +62,8 @@ namespace cellCon
                 outdata = outdata + "\r\n";
             }
             MessageBox.Show(outdata);
+
+            showsystime();
 		}
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
@@ -117,7 +120,9 @@ namespace cellCon
                 yangle.Visibility = Visibility.Visible;
                 xangle.SetValue(Canvas.LeftProperty, 734.0);
                 yangle.SetValue(Canvas.LeftProperty, 734.0);
+                xangle.Background = Brushes.White;
                 xangle.Opacity = 0.5;
+                yangle.Background = Brushes.White;
                 yangle.Opacity = 0.5;
                 choosearea.Visibility = Visibility.Hidden;
                 canvas2.Visibility = Visibility.Hidden;
@@ -140,8 +145,11 @@ namespace cellCon
             canvas2.Visibility = Visibility.Hidden;
             canvas1.SetValue(Grid.ColumnSpanProperty, 2);
             vce.SetValue(Grid.ColumnSpanProperty, 2);
+            hightemper.Background = Brushes.White;
             hightemper.Opacity = 0.5;
+            lowtemper.Background = Brushes.White;
             lowtemper.Opacity = 0.5;
+            avertemper.Background = Brushes.White;
             avertemper.Opacity = 0.5;
         }
 
@@ -155,15 +163,78 @@ namespace cellCon
             yangle.Visibility = Visibility.Visible;
             xangle.SetValue(Canvas.LeftProperty, 10.0);
             yangle.SetValue(Canvas.LeftProperty, 10.0);
+            xangle.Background = Brushes.Transparent;
             xangle.Opacity = 1;
+            yangle.Background = Brushes.Transparent;
             yangle.Opacity = 1;
+            hightemper.Background = Brushes.Transparent;
             hightemper.Opacity = 1;
+            lowtemper.Background = Brushes.Transparent;
             lowtemper.Opacity = 1;
+            avertemper.Background = Brushes.Transparent;
             avertemper.Opacity = 1;
         }
         #endregion
 
-/*        #region 选框大小
+        #region 显示系统时间
+        private DispatcherTimer ShowTimer;
+ 
+        public void showsystime() 
+        {
+            ShowTimer = new System.Windows.Threading.DispatcherTimer();
+            ShowTimer.Tick += new EventHandler(ShowCurTimer);
+            ShowTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            ShowTimer.Start();
+        }
+
+        public void ShowCurTimer(Object sender, EventArgs e)
+        {
+            //获得星期几
+            this.show_week.Content = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("zh-cn"));
+            this.show_week.Content += " ";
+
+            //获得年月日
+            this.show_day.Content = DateTime.Now.ToString("yyyy-MM-dd");
+            this.show_day.Content += " ";
+
+            //获得时分秒
+            this.show_time.Content = DateTime.Now.ToString("HH:mm:ss");
+        }
+        #endregion
+
+        #region 获取鼠标click点
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+            public POINT(int x, int y)
+            {
+                this.X = x;
+                this.Y = y;
+            }
+        }
+
+        Point p1, p2, p0;
+
+        private void startSelect(object sender, MouseButtonEventArgs e)
+        {
+            p1 = e.MouseDevice.GetPosition(this.canvas1);
+            this.xangle.Content = p1.X;
+            this.yangle.Content = p1.Y;
+        }
+
+        private void endSelect(object sender, MouseButtonEventArgs e)
+        {
+            p2 = e.MouseDevice.GetPosition(this.canvas1);
+        }
+        
+        private void moveSelect(object sender, MouseEventArgs e)
+        {
+            p0 = e.MouseDevice.GetPosition(this.canvas1);
+        }
+        #endregion
+
+        /*        #region 选框大小
         private void smallbox_Checked(object sender, RoutedEventArgs e)
         {
             choosearea.Height = 120;
