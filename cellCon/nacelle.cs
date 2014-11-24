@@ -5,25 +5,37 @@ using System.Text;
 using System.Threading;
 using System.IO;
 using System.IO.Ports;
+using System.Runtime.InteropServices;
+
 
 namespace cellCon
 {
+	[StructLayout(LayoutKind.Explicit, Pack=1)]
 	public struct CELLPACK 
 	{
+		[FieldOffset(0)]
 		public byte aa;
-		public byte mod;
+		[FieldOffset(1)]
+		public byte addr;
+		[FieldOffset(2)]
 		public byte fun1;
+		[FieldOffset(3)]
 		public byte fun2;
-		public Int16 data;
-		public byte ff;
+		[FieldOffset(4)]
+		public int data;
+		[FieldOffset(4)]
+		public float dataf;
+		[FieldOffset(8)]
+		public byte end;
 		public CELLPACK(byte m)
 		{
 			aa=0xaa;
-			mod=m;
+			addr=m;
 			fun1=0;
 			fun2=0;
+			dataf=0;
 			data=0;
-			ff=0xff;
+			end=0x55;
 		}
 	}
 	/// <summary>
@@ -37,6 +49,8 @@ namespace cellCon
 		public EventHandler data_update;
 		//待发送指令的队列
 		public Queue<CELLPACK> pack_list=new Queue<CELLPACK>(10);
+		//public CELLPACK cur_cmd;
+		//public bool cur_cmd_avai=false;//指令是否有效
 		public Nacelle()
 		{
 			pack.pack_len=10;
@@ -48,20 +62,37 @@ namespace cellCon
 		//搜索串口
 		public void find_uart(string[] com)
 		{
-			for(int i=0;i<com.Length;i++)
+			int i;
+			for(i=0;i<com.Length;i++)
 			{
 				try
 				{
 					uart.PortName=com[i];
 					uart.ReadTimeout=500;
+					uart.BaudRate=19200;
 					uart.Open();
-					//uart.Write();
-					//uart.Read();
+
+					CELLPACK t1=new CELLPACK(0);
+					t1.fun1=10;
+					t1.fun2=2;
+					t1.addr=1;
+					t1.data=0;
+					byte[] buf=Struct_Byte.StructToBytes(t1);
+					uart.send(buf, buf.Length);	//发送请求
+					uart.Read(buf,0,buf.Length);
+					if(buf[0]==0xaa)
+					{
+						break;
+					}
 					uart.Close();
 				}
 				catch
 				{
 				}
+			}
+			if(i==com.Length)//若没有串口响应
+			{
+				return;
 			}
 			uart.data_rx+=uart_DataReceived;
 		}
@@ -86,8 +117,11 @@ namespace cellCon
 				try
 				{
 					if(pack_list.Count>0)
+					//if(cur_cmd_avai)//若指令有效
 					{
 						byte[] buf=Struct_Byte.StructToBytes(pack_list.Dequeue());
+						//cur_cmd_avai=false;
+						//byte[] buf=Struct_Byte.StructToBytes(cur_cmd);
 						uart.send(buf, buf.Length);
 					}
 				}
@@ -118,47 +152,63 @@ namespace cellCon
 		}
 		void enqueue(CELLPACK t)
 		{
-			if(pack_list.Count<10)
+			if(pack_list.Count<3)
 			{
 				pack_list.Enqueue(t);
 			}
+			//cur_cmd=t;
+			//cur_cmd_avai=true;
 		}
 #region 接口指令
-		public void cmd_up(int y)
+		public void cmd_up(int y)	//俯仰
 		{
 			CELLPACK t1=new CELLPACK(0);
 			t1.fun1=1;
 			t1.fun2=2;//俯仰
-			t1.mod=0;
-			t1.data=(Int16)y;
+			t1.addr=1;
+			t1.dataf=y;
 			enqueue(t1);
 		}
-		public void cmd_left(int x)
+		public void cmd_left(int x)	//航向
 		{
 			CELLPACK t2=new CELLPACK(0);
 			t2.fun1=1;
 			t2.fun2=3;//航向
-			t2.mod=0;
-			t2.data=(Int16)x;
+			t2.addr=1;
+			t2.dataf=x;
 			enqueue(t2);
 		}
-		public void cmd_zoom(int c)
+		public void cmd_zero()	//归零
+		{
+			CELLPACK t1=new CELLPACK(0);
+			t1.fun1=1;
+			t1.fun2=4;//归零
+			t1.addr=1;
+			t1.dataf=0x0001;
+			enqueue(t1);
+		}
+		public void cmd_zoom(int c)	//设置摄像头缩放
 		{
 			CELLPACK t1=new CELLPACK(0);
 			t1.fun1=4;
-			t1.data=0;
-			if(c>0)
-			{
-				t1.fun2=1;
-			}
-			else if (c<0)
-			{
-				t1.fun2=2;
-			}
-			else
-			{
-				t1.fun2=3;
-			}
+			t1.fun2=1;
+			t1.data=c;
+			enqueue(t1);
+		}
+		public void cmd_save()	//设置摄像头录像
+		{
+			CELLPACK t1=new CELLPACK(0);
+			t1.fun1=4;
+			t1.fun2=2;
+			t1.data=1;
+			enqueue(t1);
+		}
+		public void cmd_change()	//视频切换
+		{
+			CELLPACK t1=new CELLPACK(0);
+			t1.fun1=4;
+			t1.fun2=4;
+			t1.data=1;
 			enqueue(t1);
 		}
 		/// <summary>
@@ -168,7 +218,7 @@ namespace cellCon
 		public void cmd_VerForce(byte c)
 		{
 			CELLPACK t1=new CELLPACK(0);
-			t1.mod=0;
+			t1.addr=1;
 			t1.fun1=6;
 			t1.fun2=1;
 			t1.data=c;
@@ -177,7 +227,7 @@ namespace cellCon
 		public void cmd_HorForce(byte c)
 		{
 			CELLPACK t1=new CELLPACK(0);
-			t1.mod=0;
+			t1.addr=1;
 			t1.fun1=6;
 			t1.fun2=2;
 			t1.data=c;
@@ -186,7 +236,7 @@ namespace cellCon
 		public void cmd_HorCali()
 		{
 			CELLPACK t1=new CELLPACK(0);
-			t1.mod=0;
+			t1.addr=1;
 			t1.fun1=7;
 			t1.fun2=0;
 			t1.data=0;
@@ -195,31 +245,32 @@ namespace cellCon
 		public void cmd_VerCali()
 		{
 			CELLPACK t1=new CELLPACK(0);
-			t1.mod=0;
+			t1.addr=1;
 			t1.fun1=7;
 			t1.fun2=1;
 			t1.data=0;
 			enqueue(t1);
 		}
 		/// <summary>
-		/// 0x00停止模式；
-		/// 0x01 手动模式
-		/// 0x02 陀螺稳定模式
-		/// 0x03 跟踪模式
+		/// 0：演示模式
+		/// 1：纯手动
+		/// 2：稳定模式
+		/// 3：跟踪模式
+		/// 4：导航模式
 		/// </summary>
-		public void cmd_mode(byte c)
+		public void cmd_mode(byte c)	//设置模式
 		{
 			CELLPACK t1=new CELLPACK(0);
-			t1.mod=0;
-			t1.fun1=8;
+			t1.addr=1;
+			t1.fun1=5;
 			t1.fun2=1;
 			t1.data=c;
 			enqueue(t1);
 		}
-		public void cmd_trace(byte c)
+		public void cmd_trace(byte c)	//跟踪功能，现在还不对
 		{
 			CELLPACK t1=new CELLPACK(0);
-			t1.mod=0;
+			t1.addr=1;
 			t1.fun1=0x11;
 			t1.fun2=c;
 			t1.data=0;
@@ -231,11 +282,11 @@ namespace cellCon
 			CELLPACK t2=new CELLPACK(0);
 			t1.fun1=0x10;
 			t1.fun2=1;//俯仰
-			t1.mod=0;
+			t1.addr=1;
 			t1.data=(Int16)y;
 			t2.fun1=0x10;
 			t2.fun2=0;//航向
-			t2.mod=0;
+			t2.addr=1;
 			t2.data=(Int16)x;
 			enqueue(t1);
 			enqueue(t2);
