@@ -128,6 +128,7 @@ namespace cellCon
                 canvas2.Visibility = Visibility.Hidden;
                 canvas1.SetValue(Grid.ColumnSpanProperty, 2);
                 vce.SetValue(Grid.ColumnSpanProperty, 2);
+                nacell.cmd_change();
             }
             catch{
             
@@ -151,6 +152,7 @@ namespace cellCon
             lowtemper.Opacity = 0.5;
             avertemper.Background = Brushes.White;
             avertemper.Opacity = 0.5;
+            nacell.cmd_change();
         }
 
         private void bothButton_Checked(object sender, RoutedEventArgs e)
@@ -231,6 +233,69 @@ namespace cellCon
         private void moveSelect(object sender, MouseEventArgs e)
         {
             p0 = e.MouseDevice.GetPosition(this.canvas1);
+        }
+        #endregion
+
+        #region 按键事件响应
+        private void but_up_keydown(object sender, KeyEventArgs e)
+        {
+            nacell.cmd_up(30.0f);
+        }
+
+        private void but_right_keydown(object sender, KeyEventArgs e)
+        {
+            nacell.cmd_left(30.0f);
+        }
+
+        private void but_left_keydown(object sender, KeyEventArgs e)
+        {
+            nacell.cmd_left(-30.0f);
+        }
+
+        private void but_down_keydown(object sender, KeyEventArgs e)
+        {
+            nacell.cmd_up(-30.0f);
+        }
+
+        private void but_v_keyup(object sender, KeyEventArgs e)
+        {
+            nacell.cmd_up(0.0f);
+        }
+
+        private void but_h_keyup(object sender, KeyEventArgs e)
+        {
+            nacell.cmd_left(0.0f);
+        }
+        
+        private int zoomvalue = 4;
+
+        private void zommin_keydown(object sender, KeyEventArgs e)
+        {
+            nacell.cmd_zoom(zoomvalue);
+        }
+
+        private void zomm_keyup(object sender, KeyEventArgs e)
+        {
+            nacell.cmd_zoom(0);
+        }
+
+        private void zommout_keydown(object sender, KeyEventArgs e)
+        {
+            nacell.cmd_zoom(-zoomvalue);
+        } 
+
+        private void zommplus_click(object sender, RoutedEventArgs e)
+        {
+            if (zoomvalue < 8) {
+                zoomvalue++;
+            }
+        }
+
+        private void zomminus_click(object sender, RoutedEventArgs e)
+        {
+            if (zoomvalue > 1) {
+                zoomvalue--;
+            }
         }
         #endregion
 

@@ -118,28 +118,28 @@
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" FontWeight="Bold">镜头方向控制</Label>
-                    <Button Grid.Column="2" Grid.Row="1" Name="but_up">
+                    <Button Grid.Column="2" Grid.Row="1" Name="but_up" KeyDown="but_up_keydown" KeyUp="but_v_keyup">
                         <Button.Content>
                             <StackPanel Orientation="Vertical">
                                 <Image Source="/icon/arrow-up.png" Height="36"></Image>
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <Button Grid.Column="1" Grid.Row="2" Name="but_left">
+                    <Button Grid.Column="1" Grid.Row="2" Name="but_left" KeyDown="but_left_keydown" KeyUp="but_h_keyup">
                         <Button.Content>
                             <StackPanel Orientation="Vertical">
                                 <Image Source="/icon/arrow-left.png" Height="36"></Image>
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <Button Grid.Column="2" Grid.Row="3" Name="but_down">
+                    <Button Grid.Column="2" Grid.Row="3" Name="but_down" KeyDown="but_down_keydown" KeyUp="but_v_keyup">
                         <Button.Content>
                             <StackPanel Orientation="Vertical">
                                 <Image Source="/icon/arrow-down.png" Height="36"></Image>
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <Button Grid.Column="3" Grid.Row="2" Name="but_right">
+                    <Button Grid.Column="3" Grid.Row="2" Name="but_right" KeyDown="but_right_keydown" KeyUp="but_h_keyup">
                         <Button.Content>
                             <StackPanel Orientation="Vertical">
                                 <Image Source="/icon/arrow-right.png" Height="36"></Image>
@@ -201,7 +201,7 @@
                     <ColumnDefinition Width="10"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="1" Grid.Row="0" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">变焦选择</Label>
-                <Button Grid.Column="3" Grid.Row="0" Name="zommin">
+                <Button Grid.Column="3" Grid.Row="0" Name="zommin" KeyDown="zommin_keydown" KeyUp="zomm_keyup">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/icon/zoom-in.png" Height="40"></Image>
@@ -209,7 +209,7 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button Grid.Column="5" Grid.Row="0" Name="zommout">
+                <Button Grid.Column="5" Grid.Row="0" Name="zommout" KeyDown="zommout_keydown" KeyUp="zomm_keyup">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/icon/zoom-out.png" Height="40"></Image>
@@ -218,7 +218,7 @@
                     </Button.Content>
                 </Button>
                 <Label Grid.Column="1" Grid.Row="3" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">变焦幅度</Label>
-                <Button Grid.Column="3" Grid.Row="3" Name="zommplus">
+                <Button Grid.Column="3" Grid.Row="3" Name="zommplus" Click="zommplus_click">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/icon/add.png" Height="40"></Image>
@@ -226,7 +226,7 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button Grid.Column="5" Grid.Row="3" Name="zommminus">
+                <Button Grid.Column="5" Grid.Row="3" Name="zommminus" Click="zomminus_click">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/icon/remove.png" Height="40"></Image>

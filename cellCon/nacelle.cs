@@ -160,7 +160,7 @@ namespace cellCon
 			//cur_cmd_avai=true;
 		}
 #region 接口指令
-		public void cmd_up(int y)	//俯仰
+		public void cmd_up(float y)	//俯仰
 		{
 			CELLPACK t1=new CELLPACK(0);
 			t1.fun1=1;
@@ -169,7 +169,7 @@ namespace cellCon
 			t1.dataf=y;
 			enqueue(t1);
 		}
-		public void cmd_left(int x)	//航向
+        public void cmd_left(float x)	//航向
 		{
 			CELLPACK t2=new CELLPACK(0);
 			t2.fun1=1;
@@ -184,7 +184,7 @@ namespace cellCon
 			t1.fun1=1;
 			t1.fun2=4;//归零
 			t1.addr=1;
-			t1.dataf=0x0001;
+			t1.data=0x0001;
 			enqueue(t1);
 		}
 		public void cmd_zoom(int c)	//设置摄像头缩放
