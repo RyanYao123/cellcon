@@ -40,7 +40,7 @@ namespace cellCon
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			//test_ser.Show();
+			test_ser.Show();
 			DataContext=test_ser;
 
 			//现在电脑上装的所有摄像头中，选择一个摄像头。
@@ -217,22 +217,40 @@ namespace cellCon
         }
 
         Point p1, p2, p0;
+        bool imageFlag = false;
 
         private void startSelect(object sender, MouseButtonEventArgs e)
         {
             p1 = e.MouseDevice.GetPosition(this.canvas1);
-            this.xangle.Content = p1.X;
-            this.yangle.Content = p1.Y;
+            this.xangle.Content = "START" + p1.X;
+            this.yangle.Content = "START" + p1.Y;
+            this.choosearea.SetValue(Canvas.LeftProperty, p1.X);
+            this.choosearea.SetValue(Canvas.TopProperty, p1.Y);
+            this.choosearea.Height = 0;
+            this.choosearea.Width = 0;
+            imageFlag = true;
         }
 
         private void endSelect(object sender, MouseButtonEventArgs e)
         {
             p2 = e.MouseDevice.GetPosition(this.canvas1);
+            this.xangle.Content = "END" + p2.X;
+            this.yangle.Content = "END" + p2.Y;
+            imageFlag = false;
         }
         
         private void moveSelect(object sender, MouseEventArgs e)
         {
             p0 = e.MouseDevice.GetPosition(this.canvas1);
+            this.xangle.Content = "MOVE" + p0.X;
+            this.yangle.Content = "MOVE" + p0.Y;
+            double boxHeight = p0.X - p1.X;
+            double boxWidth = p0.Y - p1.Y;
+            if (imageFlag==true && boxHeight>=0 && boxWidth>=0)
+            {
+                this.choosearea.Width = p0.X - p1.X;
+                this.choosearea.Height = p0.Y - p1.Y;
+            }
         }
         #endregion
 

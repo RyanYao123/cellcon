@@ -35,14 +35,19 @@ namespace cellCon
 			}
 			return 6;
 		}
-		bool pro(byte[] b, int len)
+		bool pro(byte[] b, int len)//接收回调函数
 		{
-			UInt16 t=crc_ccitt.cal_crc(b, 10);
-			if(b[10]!=(byte)(t>>8)||b[11]!=(byte)(t))
+			UInt16 t=crc_ccitt.cal_crc(b, 6);
+			if(b[6]!=(byte)(t>>8)||b[7]!=(byte)(t))//大端存储
 			{
 				return false;
 			}
-			T=b[8]*256+b[9];
+			//判断是哪个包
+			if(b[3]==0x43 && b[4]==0 && b[5]==1)//若是获得区域温度的包
+			{
+				T=b[8+4]*256+b[8+5];//大端存储
+			}
+			
 			return true;
 		}
 		void uart_data_rx(object sender, EventArgs e)
@@ -67,7 +72,7 @@ namespace cellCon
 
 		//设备使用大端存储
 		public byte[] temp_buf=new byte[10]{0x6e,0,0,0x2a,0,0,0,0,0,0};//2a或者是43
-		public void get_temp()
+		public void get_temp()	//获取平均温度
 		{
 			UInt16 t=crc_ccitt.cal_crc(temp_buf, 6);
 			temp_buf[6]=(byte)(t>>8);
@@ -76,7 +81,7 @@ namespace cellCon
 			uart.send(temp_buf, temp_buf.Length);
 		}
 		public byte[] get_cmd2_buf=new byte[12] { 0x6e, 0, 0, 0x43, 0, 2, 0, 0, 1, 0, 0, 0 };
-		public void get_cmd2(byte cmd,byte data1,byte data2)
+		public void get_cmd2(byte cmd,byte data1,byte data2)//发送两个字符的指令
 		{
 			get_cmd2_buf[3]=cmd;
 			UInt16 t=crc_ccitt.cal_crc(get_cmd2_buf, 6);
@@ -93,7 +98,7 @@ namespace cellCon
 			uart.send(get_cmd2_buf, get_cmd2_buf.Length);
 		}
 		public byte[] get_spot_buf=new byte[12] { 0x6e, 0, 0, 0x43, 0, 2, 0, 0, 1, 0, 0, 0};
-		public void get_spot()
+		public void get_spot()	//获得区域大小
 		{
 			UInt16 t=crc_ccitt.cal_crc(get_spot_buf, 6);
 			get_spot_buf[6]=(byte)(t>>8);
@@ -109,7 +114,7 @@ namespace cellCon
 			uart.send(get_spot_buf, get_spot_buf.Length);
 		}
 		public byte[] spot_buf=new byte[18] {0x6e,0,0,0x43,0,8,0,0, 0,0,0,0, 0,0,0,0, 0,0 };
-		public void set_spot(int left, int up, int right, int down)
+		public void set_spot(int left, int up, int right, int down)//设置区域大小
 		{
 			UInt16 t=crc_ccitt.cal_crc(spot_buf, 6);
 			spot_buf[6]=(byte)(t>>8);
@@ -129,6 +134,10 @@ namespace cellCon
 			spot_buf[17]=(byte)(t);
 			//发送
 			uart.send(spot_buf, spot_buf.Length);
+		}
+		public void get_spot_temp()
+		{
+			get_cmd2(0x43, 0, 1);
 		}
 #endregion
 	}

@@ -50,7 +50,7 @@ namespace cellCon
 			cell_y=10;
 
 			//红外部分
-			flir_com=6;
+			flir_com=5;
 			flir_left=168-20;
 			flir_up=128-20;
 			flir_right=168+20;
@@ -135,7 +135,8 @@ namespace cellCon
 		}
 		private void bt_flir_get(object sender, RoutedEventArgs e)
 		{
-			flir.get_temp();
+			//flir.get_temp();
+			flir.get_cmd2(0x43, 0, 1);
 		}
 		private void bt_flir_get_spot(object sender, RoutedEventArgs e)
 		{
@@ -147,7 +148,7 @@ namespace cellCon
 		}
 		private void bt_flir_test_cmd(object sender, RoutedEventArgs e)
 		{
-			flir.get_cmd2(0x43, 0,1);
+			flir.get_cmd2(0x2b, 0, 0x03);
 		}
 		#endregion
 
