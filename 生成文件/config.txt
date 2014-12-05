@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <吊舱串口号>1</吊舱串口号>
+  <红外串口号>2</红外串口号>
+  <可见光视频号>1</可见光视频号>
+  <红外视频号>0</红外视频号>
+</root>
