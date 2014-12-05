@@ -18,6 +18,8 @@ namespace cellCon
 	/// </summary>
 	public partial class TestSer : Window
 	{
+		//配置：
+		public 配置 config=new 配置();
 		//业务变量
 		Nacelle nacell=new Nacelle();
 		flir_serial flir=new flir_serial();
@@ -37,20 +39,26 @@ namespace cellCon
 		public TestSer()
 		{
 			InitializeComponent();
-			UInt16 t=crc_ccitt.cal_crc(new byte[]{0x6e,0,0,0x0b,0,2},6);
-			flir_org_text.Text=t.ToString("X");
+			//读取配置文件
+			//test
+			//test_ser.config.吊舱串口号=1;
+			//test_ser.config.红外串口号=2;
+			//test_ser.config.红外视频号=0;
+			//test_ser.config.可见光视频号=1;
+			//XMLSer.Serial("config.txt", test_ser.config);
+			config=(配置)XMLSer.DSerial("config.txt", typeof(配置));
 
 			//初始化
 			nacell.uart.data_update+=new EventHandler(nacell_data_update);
 			flir.uart.data_update+=new EventHandler(flir_data_update);
 			//界面初始化
 			//云台部分
-			cell_com=14;
+			cell_com=config.吊舱串口号;
 			cell_x=0;
 			cell_y=10;
 
 			//红外部分
-			flir_com=6;
+			flir_com=config.红外串口号;
 			flir_left=168-20;
 			flir_up=128-20;
 			flir_right=168+20;
@@ -135,7 +143,8 @@ namespace cellCon
 		}
 		private void bt_flir_get(object sender, RoutedEventArgs e)
 		{
-			flir.get_temp();
+			//flir.get_temp();
+			flir.get_cmd2(0x43, 0, 1);
 		}
 		private void bt_flir_get_spot(object sender, RoutedEventArgs e)
 		{
@@ -147,7 +156,7 @@ namespace cellCon
 		}
 		private void bt_flir_test_cmd(object sender, RoutedEventArgs e)
 		{
-			flir.get_cmd2(0x43, 0,1);
+			flir.get_cmd2(0x2b, 0, 0x03);
 		}
 		#endregion
 

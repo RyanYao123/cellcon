@@ -78,7 +78,9 @@
     <Compile Include="uart_dbg.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="XMLSer.cs" />
     <Compile Include="接收组包.cs" />
+    <Compile Include="配置.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
